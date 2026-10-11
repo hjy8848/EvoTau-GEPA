@@ -1,0 +1,78 @@
+[
+  {
+    "date": "2026-10-12",
+    "phase": "M1 ongoing, no M3 or H results observed",
+    "reason": "Accounting hard-cap enforcement/cached-token reporting and offline discovery deduplication; unchanged agents, optimizer, evaluation objectives, tasks, seeds and model settings.",
+    "changes": [
+      {
+        "file": "src/evotau_gepa/reporting.py",
+        "before": "78ad56cd9713ee1862f417d8707fd4db66f973cc8d9b3ea15f1b9da1763d0dc5",
+        "after": "8fdac96c05ed2639e7d7fe52e138e2c2374216ce84dcb7895aa0513ed934e35d"
+      },
+      {
+        "file": "src/evotau_gepa/budget.py",
+        "before": "460d17b2cc5f65f4c182d7327f25f70840a56aceb6a71dbcadc50f69d0288e03",
+        "after": "126686dd7808a0fbde1292419a4de8af46cae85719562fbbb9be85db3475fc5f"
+      }
+    ]
+  },
+  {
+    "date": "2026-10-12",
+    "phase": "M1 ongoing; M3/H not observed",
+    "reason": "Add context-local run attribution for native, review and reflection requests. Exact arm costs are needed for fair comparison. Conservative native-only legacy attribution retained. No experimental scoring/selection change.",
+    "changes": [
+      {
+        "file": "src/evotau_gepa/adapter.py",
+        "before": "b14fca3ab1898a8f4e6da6e0f25fa83c868509b000692822125adbbe5ca8ef89",
+        "after": "84ecc6a97d146bb35f128b2a5ad9d74b14c33c8d2acc828e6ada51ea403c21f7"
+      },
+      {
+        "file": "src/evotau_gepa/budget.py",
+        "before": "126686dd7808a0fbde1292419a4de8af46cae85719562fbbb9be85db3475fc5f",
+        "after": "794e1d5c1dbdda050d5300d5aaed441f21ed126f21a8bce14527ae848a25dfd1"
+      },
+      {
+        "file": "src/evotau_gepa/experiment.py",
+        "before": "7f2267538df54052dfa92eac42109e990d7f444beac30c75fdf316a0634e5c4a",
+        "after": "9c06df54d90f6daa25d6622dbae1607b4b9517d12568fa0ab2f42b39fb5c4524"
+      },
+      {
+        "file": "src/evotau_gepa/reporting.py",
+        "before": "8fdac96c05ed2639e7d7fe52e138e2c2374216ce84dcb7895aa0513ed934e35d",
+        "after": "cbd1f9f059e42d5de01a0c1341f637144355d4e6b49352c612ce6106f1efc115"
+      },
+      {
+        "file": "src/evotau_gepa/retail.py",
+        "before": "9bed125b380fe5977c3b11f7ebc3852935ca613dc95f3d14440f311a9891307f",
+        "after": "e35eba468520906dd97b268fe379d08cc95f0efef6cdb212f1d25a376b50a5c2"
+      },
+      {
+        "file": "src/evotau_gepa/transport.py",
+        "before": "3c35322d85467ba6b8c45f4f1b0995c134db494e233a5d5c575a9e4369d3f259",
+        "after": "dbb2b97020115af5ef49a77a1d02cd4d8be4d93b1164b8a06e94562bbd60b41b"
+      }
+    ]
+  },
+  {
+    "date": "2026-10-12",
+    "phase": "M1-17 complete; before M2/M3/H",
+    "reason": "Correct scheduler so failed repair attempts do not skip the required alternating cycles. Late M4 repair pairs selected by predetermined branch/cycle order, never discovery results. Prepare shared references before M3 to avoid unequal control attribution. No change to model, metric, dataset, seeds, primary hypothesis or per-search GEPA settings.",
+    "changes": [
+      {
+        "file": "research/protocol.md",
+        "before": "4d5674d06c4d8300d9c7004963aaa502869b5cf20b8540ac16600cff9e3ee4c6",
+        "after": "68bba9db290e227ae6e8258e81569afa8727f6d87a5f22cca676a8a0eed1f278"
+      },
+      {
+        "file": "src/evotau_gepa/experiment.py",
+        "before": "9c06df54d90f6daa25d6622dbae1607b4b9517d12568fa0ab2f42b39fb5c4524",
+        "after": "68be4484d756771b30924b058729b543aed95851079f6ab7b2c7f37643191e00"
+      },
+      {
+        "file": "src/evotau_gepa/reporting.py",
+        "before": "cbd1f9f059e42d5de01a0c1341f637144355d4e6b49352c612ce6106f1efc115",
+        "after": "1c8d82a965f30dc4346e0817e6f72a9641e6d6130e14408015ff84e3c22188c4"
+      }
+    ]
+  }
+]

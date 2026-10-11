@@ -1,0 +1,13 @@
+{
+  "configs/experiment_manifest.json": "f6eed3885c5f2913f0f7f71d15ea4088679b95dbd24aa675ab29318f37ad17bd",
+  "research/protocol.md": "68bba9db290e227ae6e8258e81569afa8727f6d87a5f22cca676a8a0eed1f278",
+  "src/evotau_gepa/__init__.py": "9a37bcc9a60ead9dab3ed129f342e7674979e756e8443c4257f23432e126cf94",
+  "src/evotau_gepa/adapter.py": "84ecc6a97d146bb35f128b2a5ad9d74b14c33c8d2acc828e6ada51ea403c21f7",
+  "src/evotau_gepa/budget.py": "794e1d5c1dbdda050d5300d5aaed441f21ed126f21a8bce14527ae848a25dfd1",
+  "src/evotau_gepa/customer.py": "d99c5054bf82f92d744e0ca4dc4efdaa5173ea297f1dd98fb113cfb7bece24d1",
+  "src/evotau_gepa/experiment.py": "68be4484d756771b30924b058729b543aed95851079f6ab7b2c7f37643191e00",
+  "src/evotau_gepa/repair.py": "be45c1c61ef5f342f876ef3ad2567978c2d006e51eaec7a272b1dd18dbdf5fd6",
+  "src/evotau_gepa/reporting.py": "1c8d82a965f30dc4346e0817e6f72a9641e6d6130e14408015ff84e3c22188c4",
+  "src/evotau_gepa/retail.py": "e35eba468520906dd97b268fe379d08cc95f0efef6cdb212f1d25a376b50a5c2",
+  "src/evotau_gepa/transport.py": "dbb2b97020115af5ef49a77a1d02cd4d8be4d93b1164b8a06e94562bbd60b41b"
+}

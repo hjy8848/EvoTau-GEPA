@@ -1,0 +1,32 @@
+[
+  {
+    "path": "data/tau2/domains/retail/db.json",
+    "expected": "4d67b03b2d39ade5a7ab6facb2edd7ab3e013d48",
+    "actual": "4d67b03b2d39ade5a7ab6facb2edd7ab3e013d48",
+    "matches": true
+  },
+  {
+    "path": "data/tau2/domains/retail/policy.md",
+    "expected": "d127e6b074654926f337d0d98b0e669ebe90d19e",
+    "actual": "d127e6b074654926f337d0d98b0e669ebe90d19e",
+    "matches": true
+  },
+  {
+    "path": "data/tau2/domains/retail/split_tasks.json",
+    "expected": "8b20704a17aa1940b1e58668f89dcef2ddaeeea3",
+    "actual": "8b20704a17aa1940b1e58668f89dcef2ddaeeea3",
+    "matches": true
+  },
+  {
+    "path": "data/tau2/domains/retail/tasks.json",
+    "expected": "e95a9f898b2d1f6568ea8faec78edc3767ce747d",
+    "actual": "e95a9f898b2d1f6568ea8faec78edc3767ce747d",
+    "matches": true
+  },
+  {
+    "path": "data/tau2/user_simulator/simulation_guidelines.md",
+    "expected": "b55a28a1d5eaf81e72bdc263307d9f512fe49a99",
+    "actual": "b55a28a1d5eaf81e72bdc263307d9f512fe49a99",
+    "matches": true
+  }
+]
