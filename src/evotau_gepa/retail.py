@@ -1,5 +1,6 @@
 """Overlays subclass upstream prompts; task, tools, policy and scorer stay native."""
 
+import fcntl
 import hashlib
 import json
 from pathlib import Path
@@ -73,6 +74,25 @@ class Retail:
         return Task.model_validate(raw)
 
     def run(
+        self, task_id, seed, service="", customer="", condition="native", split="E", final=False
+    ):
+        identity = {
+            "task": task_id,
+            "seed": seed,
+            "service": service,
+            "customer": customer,
+            "condition": condition,
+            "split": split,
+            "manifest": digest(self.manifest),
+            "model": MODEL,
+        }
+        locks = self.directory / "locks"
+        locks.mkdir(exist_ok=True)
+        with (locks / (digest(identity) + ".lock")).open("w") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            return self._run_unlocked(task_id, seed, service, customer, condition, split, final)
+
+    def _run_unlocked(
         self, task_id, seed, service="", customer="", condition="native", split="E", final=False
     ):
         task = self.task(task_id, split, final)

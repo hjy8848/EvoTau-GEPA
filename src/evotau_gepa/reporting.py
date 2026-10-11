@@ -180,6 +180,59 @@ def build(root):
     }
     states_path = root / "results/states.json"
     states = json.loads(states_path.read_text()) if states_path.exists() else []
+    method_rows = []
+    for name, prefix in [
+        ("Native", "H-native"),
+        ("GEPA-Service", "H-GEPA-Service-"),
+        ("Free-GEPA", "H-free-"),
+        ("Open-RC branch", "H-rc-"),
+    ]:
+        selected = [
+            e
+            for e in episodes
+            if e["split"] == "H"
+            and (
+                e["condition"] == prefix if name == "Native" else e["condition"].startswith(prefix)
+            )
+        ]
+        method_rows.append(
+            {
+                "method": name,
+                "episodes": len(selected),
+                "tasks": len({e["task"] for e in selected}),
+                "accuracy": float(np.mean([e["native_reward"] for e in selected]))
+                if selected
+                else None,
+            }
+        )
+    (root / "results/method_summary.json").write_text(json.dumps(method_rows, indent=2))
+    method_table = "| Method | H episodes | H tasks | Native accuracy |\n|---|---:|---:|---:|\n"
+    for row in method_rows:
+        value = f"{row['accuracy']:.3f}" if row["accuracy"] is not None else "not evaluated"
+        method_table += f"| {row['method']} | {row['episodes']} | {row['tasks']} | {value} |\n"
+    (root / "paper/tables/method_summary.md").write_text(method_table)
+    overlap = set(manifest.get("historical_H_overlap", []))
+    strata = []
+    for label in sorted({e["condition"] for e in episodes if e["split"] == "H"}):
+        for exposure in [True, False]:
+            selected = [
+                e
+                for e in episodes
+                if e["condition"] == label
+                and e["split"] == "H"
+                and (e["task"] in overlap) == exposure
+            ]
+            if selected:
+                strata.append(
+                    {
+                        "condition": label,
+                        "historical_ID_overlap": exposure,
+                        "episodes": len(selected),
+                        "tasks": len({e["task"] for e in selected}),
+                        "accuracy": float(np.mean([e["native_reward"] for e in selected])),
+                    }
+                )
+    (root / "results/heldout_exposure_strata.json").write_text(json.dumps(strata, indent=2))
     cycle_rows = [
         dict(x, branch=c, seed=s["search_seed"])
         for s in states
@@ -295,6 +348,23 @@ def build(root):
         else "**Full research execution is incomplete. Missing stages are not negative results.**\n\n"
     )
     report += table + "\nPrimary comparison: " + json.dumps(statistics) + "\n\n"
+    report += "## Final H methods\n\n" + method_table + "\n"
+    report += "## Service search\n\n"
+    for path in sorted((root / "results/searches").glob("M1-*/selection.json")):
+        selection = json.loads(path.read_text())
+        report += f"- {selection['run_id']}: V {selection['initial_score']:.3f} → {selection['best_score']:.3f}; stagnant={selection.get('stagnated', False)}; official accepted candidates={selection['accepted_candidates']}.\n"
+    report += "\n## Customer discovery and validity\n\n"
+    report += "All measured search metrics are in results/search_metrics.json. Per-task discoveries are deduplicated within a search; repeated records remain available as evidence. Mechanism strings are automatically proposed labels, not human-adjudicated independent failure mechanisms.\n\n"
+    report += "## Alternating state transitions\n\n"
+    for state in states:
+        report += f"Search seed {state['search_seed']}: {state.get('core_status', 'initial repeated repair available')}.\n\n"
+        for condition, branch in state.get("branches", {}).items():
+            for cycle in branch["cycles"]:
+                report += f"- {condition} cycle {cycle['cycle']}: Service {cycle['service_before'][:12]} → {cycle['service_after'][:12]}; repeated repairs={len(cycle['repair'])}; Customer changed={cycle['customer_changed']}.\n"
+    report += "\n## Ablations, repeats and uncertainty\n\n"
+    report += f"Frozen search seeds: {manifest['search_seeds']}. Eligible completed fixed-S1 pairs: {paired}. Free/RC starting without evidence is not a repair-conditioned causal experiment. Shuffled/length-matched repair controls were secondary and were not executed unless separately recorded. One primary comparison, task-cluster bootstrap; other comparisons descriptive. H only reports the actually executed seed plan, not unrun repetitions.\n\n"
+    report += "## Evidence and reproducibility\n\n"
+    report += "Native messages, tool calls/results and reward decomposition: results/episodes/. Exact raw transport requests/responses: results/requests/. Candidate history includes rejected proposals. Frozen dependency, source/config and official-data hashes are verifiable with scripts/verify_freeze.py. Offline reconstruction: `.venv/bin/python scripts/build_paper_results.py`. Full execution/resume: set EVOTAU_API_BASE and credentials, then `.venv/bin/python scripts/reproduce.py`.\n\n"
     report += "API usage: " + json.dumps(usage) + "\n\n"
     report += "Only actual episodes are included. Evidence review is automatic, not independent human validation. H has historical exposure; no claim of entirely unseen blind testing. Costs are unknown. Pass^k is not reported without actual k repetitions.\n"
     interruption = root / "results/interruption.json"

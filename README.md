@@ -41,3 +41,12 @@ This makes no API calls. Output: paper/experiment_report.md, paper/tables/, pape
 Candidate histories retain even evaluated candidates that GEPA did not accept. Automatic customer evidence reviews are explicitly marked; unresolved cases get zero discovery credit. Observed task success is never replaced by a guessed native reward.
 
 The frozen study is exploratory: small E/V panels and three search repeats. H includes historically exposed task IDs, documented in research/historical_overlap.json. A real, repeat-verified repair is required to test repair conditioning. No verified repair means the primary RC question is unidentifiable for that repeat, not a negative causal result.
+
+When raw results are archived for Git delivery, first restore and verify them:
+
+```bash
+.venv/bin/python scripts/unpack_results.py
+.venv/bin/python scripts/verify_freeze.py
+```
+
+The archive manifest verifies every original file, including official GEPA checkpoint state. Unpacking restores completed-episode caches so frozen execution can resume without rebilling completed episodes. Keep the durable SQLite ledger alongside the archive. `scripts/archive_results.py` packages originals without deleting them; run only after the experiment process exits.

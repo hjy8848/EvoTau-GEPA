@@ -8,3 +8,5 @@
 - Customer reviews are one independent call after actual exposure, not an analyst/mutator/validator pipeline. Unsupported evidence is unresolved.
 - Verified repair is a scientific prerequisite. Retaining a Service state is stagnation, never a fabricated evolution.
 - Budget feasibility uses a small E/V panel, three search repeats, two alternating cycles and full official H Service accuracy. Statistical power is explicitly limited.
+
+- Independent search repeats execute in a plain three-thread pool; native episode batches use four workers. Native LLM seeds are participant-local (verified upstream LLMConfigMixin), not global RNG mutations. Per-episode advisory locks prevent duplicate billing for shared reference/cache identities. This is concurrency tuning within the authorized task, not a new agent framework or queue service.

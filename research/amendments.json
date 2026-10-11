@@ -74,5 +74,63 @@
         "after": "1c8d82a965f30dc4346e0817e6f72a9641e6d6130e14408015ff84e3c22188c4"
       }
     ]
+  },
+  {
+    "date": "2026-10-12",
+    "phase": "M2 ongoing, before M3/H",
+    "reason": "Expand offline report to method H summaries, exposure strata, all-attempt run costs, state transitions and eight plots. No runtime or scientific metric change.",
+    "changes": [
+      {
+        "file": "src/evotau_gepa/reporting.py",
+        "before": "1c8d82a965f30dc4346e0817e6f72a9641e6d6130e14408015ff84e3c22188c4",
+        "after": "6a94a922db5de4e2041ef7bbe9cce56f82cc897a61803a8ae3d89d60142fabc8"
+      }
+    ]
+  },
+  {
+    "date": "2026-10-12",
+    "phase": "M2-17 ongoing; before M3/H",
+    "reason": "Tune authorized concurrency: 3 independent search repeats, 4 episodes per batch, atomic cache-identity locks; record actual metric budget completion. Identical study tasks, seeds, per-search GEPA settings, model and scoring.",
+    "changes": [
+      {
+        "file": "src/evotau_gepa/experiment.py",
+        "before": "68be4484d756771b30924b058729b543aed95851079f6ab7b2c7f37643191e00",
+        "after": "e4c099118c8c5c1a188687775fdb076a983070a7390e647b1e3e10fb2e3beb6c"
+      },
+      {
+        "file": "src/evotau_gepa/retail.py",
+        "before": "e35eba468520906dd97b268fe379d08cc95f0efef6cdb212f1d25a376b50a5c2",
+        "after": "93589e68d879656737998999312d95e887ff0cf36add186c3ce53a8c2ccccd4a"
+      }
+    ]
+  },
+  {
+    "date": "2026-10-12",
+    "phase": "before M3/H",
+    "reason": "H concurrency 12 workers over fully frozen selections; benchmark/scoring/seeds and budgets unchanged.",
+    "changes": [
+      {
+        "file": "src/evotau_gepa/experiment.py",
+        "before": "e4c099118c8c5c1a188687775fdb076a983070a7390e647b1e3e10fb2e3beb6c",
+        "after": "f90346e50dee2c34b09144a450cd7ebc0a979bef8eadbcfbc4753b56727749ae"
+      }
+    ]
+  },
+  {
+    "date": "2026-10-12",
+    "phase": "M2 ongoing; M3/H not observed",
+    "reason": "Implement prespecified final challenge controls and independent automatic review/repetition so H score drops cannot be misreported as valid discoveries. H results never inform search.",
+    "changes": [
+      {
+        "file": "research/protocol.md",
+        "before": "68bba9db290e227ae6e8258e81569afa8727f6d87a5f22cca676a8a0eed1f278",
+        "after": "4f257066cc2fa249a91ebcec0393d60e9f0813ff11a5aa68596c9e1eb4f28ea1"
+      },
+      {
+        "file": "src/evotau_gepa/experiment.py",
+        "before": "f90346e50dee2c34b09144a450cd7ebc0a979bef8eadbcfbc4753b56727749ae",
+        "after": "f38d15fe09dca88a41a7fb7f88fcb3dbc17e416d99c2934216f50ca1ee96d495"
+      }
+    ]
   }
 ]
