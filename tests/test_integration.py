@@ -6,7 +6,7 @@ import pytest
 from gepa.core.adapter import EvaluationBatch
 
 from evotau_gepa.adapter import RetailAdapter
-from evotau_gepa.reporting import clustered_difference
+from evotau_gepa.reporting import clustered_accuracy, clustered_difference
 
 
 def test_adapter_preserves_native_reward(tmp_path):
@@ -48,6 +48,16 @@ def test_cluster_bootstrap_uses_tasks_not_episodes():
     assert result["effect"] == 0
     assert result["task_count"] == 2
     assert clustered_difference({}, {})["effect"] is None
+
+
+def test_accuracy_uncertainty_averages_repeats_within_task():
+    episodes = [{"task": "a", "native_reward": score} for score in [0, 0, 1]] + [
+        {"task": "b", "native_reward": 1}
+    ]
+    accuracy, ci = clustered_accuracy(episodes)
+    assert accuracy == pytest.approx(2 / 3)
+    assert ci == pytest.approx([1 / 3, 1])
+    assert clustered_accuracy([]) == (None, None)
 
 
 def test_actual_smoke_preserves_scoring():

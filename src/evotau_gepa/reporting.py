@@ -10,6 +10,20 @@ import numpy as np
 from .budget import Budget
 
 
+def clustered_accuracy(episodes, samples=10000, seed=1729):
+    """Descriptive task bootstrap; average actual repeats within each task."""
+    grouped = defaultdict(list)
+    for episode in episodes:
+        grouped[episode["task"]].append(episode["native_reward"])
+    if not grouped:
+        return None, None
+    values = np.array([np.mean(grouped[task]) for task in sorted(grouped)])
+    if len(values) < 2:
+        return float(values.mean()), None
+    boots = np.random.default_rng(seed).choice(values, size=(samples, len(values))).mean(axis=1)
+    return float(values.mean()), list(np.quantile(boots, [0.025, 0.975]))
+
+
 def clustered_difference(free, rc, samples=10000, seed=1729):
     tasks = sorted(set(free) & set(rc))
     if len(tasks) < 2:
@@ -232,21 +246,26 @@ def build(root):
                 e["condition"] == prefix if name == "Native" else e["condition"].startswith(prefix)
             )
         ]
+        accuracy, ci95 = clustered_accuracy(selected)
         method_rows.append(
             {
                 "method": name,
                 "episodes": len(selected),
                 "tasks": len({e["task"] for e in selected}),
-                "accuracy": float(np.mean([e["native_reward"] for e in selected]))
-                if selected
-                else None,
+                "accuracy": accuracy,
+                "task_cluster_ci95": ci95,
+                "uncertainty_scope": "descriptive task bootstrap; actual repeats averaged within task",
             }
         )
     (root / "results/method_summary.json").write_text(json.dumps(method_rows, indent=2))
-    method_table = "| Method | H episodes | H tasks | Native accuracy |\n|---|---:|---:|---:|\n"
+    method_table = "| Method | H episodes | H tasks | Native accuracy | Task bootstrap 95% CI |\n|---|---:|---:|---:|---|\n"
     for row in method_rows:
         value = f"{row['accuracy']:.3f}" if row["accuracy"] is not None else "not evaluated"
-        method_table += f"| {row['method']} | {row['episodes']} | {row['tasks']} | {value} |\n"
+        ci = row["task_cluster_ci95"]
+        interval = f"[{ci[0]:.3f}, {ci[1]:.3f}]" if ci is not None else "not estimable"
+        method_table += (
+            f"| {row['method']} | {row['episodes']} | {row['tasks']} | {value} | {interval} |\n"
+        )
     (root / "paper/tables/method_summary.md").write_text(method_table)
     overlap = set(manifest.get("historical_H_overlap", []))
     strata = []

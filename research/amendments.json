@@ -197,5 +197,22 @@
         "after": "1d396186f5abcd9d7477d03df81065f3245171fd64a7ae76556202786fae0254"
       }
     ]
+  },
+  {
+    "date": "2026-10-11T18:40:33.360576+00:00",
+    "phase": "M4 in progress; before any M3/H results",
+    "reason": "Specify descriptive H task-cluster accuracy intervals before H execution, averaging actual repeats within each task. No primary statistic, model, native reward, search or candidate selection changed. Added a regression test preventing episode pseudo-replication.",
+    "changes": [
+      {
+        "file": "src/evotau_gepa/reporting.py",
+        "before": "741c0cbec3c649cd79e31da582ff92ae5aaf6a7056b6dadb348dab1752081225",
+        "after": "42f7f6acfdf677007a59763e044beb418da9d2b77fb0a5dbd463a477dd7bcdf5"
+      },
+      {
+        "file": "research/protocol.md",
+        "before": "b8e6ba089b8263b60da1e0b462d8fa58c57f43f6bf56f528d68c3ce60b5050ff",
+        "after": "3e74ee354794d74b6f71b06514f0fae9f6725d3f12dc7ad8f78e2d2606ad8813"
+      }
+    ]
   }
 ]
