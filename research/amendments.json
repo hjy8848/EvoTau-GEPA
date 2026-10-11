@@ -185,5 +185,17 @@
         "after": "741c0cbec3c649cd79e31da582ff92ae5aaf6a7056b6dadb348dab1752081225"
       }
     ]
+  },
+  {
+    "date": "2026-10-11T18:26:06.032997+00:00",
+    "phase": "M4 in progress; no M3 or H results",
+    "reason": "Accounting labels only: zero applies to automatic transport retries. Manual recovery/resumption may duplicate sends; its duplicate count is unknown and every send remains charged. Reservation, cap, scoring, search and statistics unchanged.",
+    "changes": [
+      {
+        "file": "src/evotau_gepa/budget.py",
+        "before": "794e1d5c1dbdda050d5300d5aaed441f21ed126f21a8bce14527ae848a25dfd1",
+        "after": "1d396186f5abcd9d7477d03df81065f3245171fd64a7ae76556202786fae0254"
+      }
+    ]
   }
 ]

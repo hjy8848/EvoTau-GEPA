@@ -64,6 +64,8 @@ class Budget:
                 x.get("usage", {}).get("prompt_tokens_details", {}).get("cached_tokens", 0)
                 for x in usage
             ),
-            "retries": 0,
+            "automatic_transport_retries": 0,
+            "manual_resume_duplicate_sends": None,
+            "resume_accounting": "All resumed sends are charged; duplicate-send count unknown",
             "reservations_uncertain_or_inflight": counts.get("reserved", 0),
         }
