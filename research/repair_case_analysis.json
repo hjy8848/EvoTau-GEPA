@@ -1,0 +1,52 @@
+{
+  "task": "22",
+  "repair_run": "M4-free-43-1",
+  "mechanism_observed": "US state name vs abbreviation in the persisted pending-order address",
+  "native_task_repair": true,
+  "policy_violation_repair_claim": false,
+  "review_note": "All four fidelity reviews reported lawful Customer behavior and no policy violation; fidelity is not proof of a Service policy failure.",
+  "causal_limit": "Two observed native fail-to-pass seeds under attributed prompt change; multiple prompt instructions and divergent natural conversations do not isolate one causal sentence.",
+  "scorer_unchanged": true,
+  "evidence": [
+    {
+      "episode_key": "e069d51895987b4556665b391c276f6612f5ced10b483d8eb4f4d3b9828442e5",
+      "condition": "M4-free-43-1-after",
+      "seed": 101,
+      "native_reward": 1.0,
+      "db_match": true,
+      "pending_order_state_arguments": [
+        "NY"
+      ]
+    },
+    {
+      "episode_key": "b3395d6dd60e212e763b1d990f317c5fd557bf3bcc6e54430addfb73a6731292",
+      "condition": "M4-free-43-1-before",
+      "seed": 101,
+      "native_reward": 0.0,
+      "db_match": false,
+      "pending_order_state_arguments": [
+        "New York"
+      ]
+    },
+    {
+      "episode_key": "f144bf0b71a807b32d6ece4e982af87ba7ef399d34262254e23328f07da45dd8",
+      "condition": "M4-free-43-1-after",
+      "seed": 202,
+      "native_reward": 1.0,
+      "db_match": true,
+      "pending_order_state_arguments": [
+        "NY"
+      ]
+    },
+    {
+      "episode_key": "4a140268bacb9f900af077beb63a7269e7662e09583038e803ea028bcb2f6e57",
+      "condition": "M4-free-43-1-before",
+      "seed": 202,
+      "native_reward": 0.0,
+      "db_match": false,
+      "pending_order_state_arguments": [
+        "New York"
+      ]
+    }
+  ]
+}

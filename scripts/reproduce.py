@@ -2,12 +2,14 @@
 
 import fcntl
 import os
+import runpy
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
 run_lock = (root / "results/execution.lock").open("w")
 fcntl.flock(run_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-os.environ.setdefault("TAU2_DATA_DIR", str(root / "benchmark/data"))
+os.environ["TAU2_DATA_DIR"] = str(root / "benchmark/data")
+runpy.run_path(str(root / "scripts/verify_freeze.py"), run_name="__main__")
 from evotau_gepa.experiment import Experiment, save
 
 experiment = Experiment(root)
