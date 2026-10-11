@@ -87,6 +87,13 @@ def build(root):
             (root / f"results/searches/{label}/selection.json").exists() for label in labels
         ):
             continue
+        if not all(
+            json.loads((root / f"results/searches/{label}/selection.json").read_text()).get(
+                "metric_budget_completed", False
+            )
+            for label in labels
+        ):
+            continue
         paired.append(seed)
         for label, target in zip(labels, [free, rc]):
             found = {x["episode"]["task"] for x in run_audits[label] if x["score"] == 1}
@@ -245,7 +252,12 @@ def build(root):
     )
     plots["service_cycles"] = (
         [f"{x['branch']}-{x['seed']}-{x['cycle']}" for x in cycle_rows],
-        [x["service_search"]["best_score"] for x in cycle_rows],
+        [
+            x["service_search"]["best_score"]
+            if x["service_promoted"]
+            else x["service_search"]["initial_score"]
+            for x in cycle_rows
+        ],
     )
     plots["customer_cycles"] = (
         [f"{x['branch']}-{x['seed']}-{x['cycle']}" for x in cycle_rows],
@@ -341,6 +353,26 @@ def build(root):
         fig.tight_layout()
         fig.savefig(root / f"paper/figures/{name}.png", dpi=160)
         plt.close(fig)
+    fig, ax = plt.subplots(figsize=(6, 4))
+    points = [
+        (cost["all_attempts"], metric["novel_task_discoveries"], cost["run_id"])
+        for cost in exact_search_costs
+        for metric in search_rows
+        if cost["run_id"] == metric["run_id"]
+    ]
+    if points:
+        ax.scatter([x[0] for x in points], [x[1] for x in points])
+        for x, y, label in points:
+            ax.annotate(label, (x, y), fontsize=6)
+    else:
+        ax.text(
+            0.5, 0.5, "No tagged complete discovery searches", ha="center", transform=ax.transAxes
+        )
+    ax.set_xlabel("All actual requests (including review/reflection)")
+    ax.set_ylabel("Deduplicated reproducible discovery tasks")
+    fig.tight_layout()
+    fig.savefig(root / "paper/figures/cost_benefit.png", dpi=160)
+    plt.close(fig)
     report = "# EvoTau-GEPA execution report\n\n"
     report += (
         "Frozen execution completed.\n\n"

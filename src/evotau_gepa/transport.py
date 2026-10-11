@@ -4,6 +4,7 @@ import contextvars
 import json
 import os
 import subprocess
+import threading
 import time
 from pathlib import Path
 from urllib.error import HTTPError
@@ -37,9 +38,14 @@ class Gateway:
             ).strip()
         )
         self.opener = build_opener(ProxyHandler({}))
+        self.inflight = threading.BoundedSemaphore(4)
         (self.root / "results/requests").mkdir(exist_ok=True)
 
     def chat(self, messages, role, tools=None, seed=None, max_tokens=4096, **ignored):
+        with self.inflight:
+            return self._chat(messages, role, tools, seed, max_tokens, **ignored)
+
+    def _chat(self, messages, role, tools=None, seed=None, max_tokens=4096, **ignored):
         payload = {
             "model": MODEL.removeprefix("openai/"),
             "messages": messages,

@@ -108,13 +108,40 @@ class Experiment:
                 left["task"], 202, after_prompt, customer, label + "-after"
             )
             if repeat_left["native_reward"] == 0 and repeat_right["native_reward"] == 1:
+                audits = [
+                    self.repair_fidelity_review(episode, customer, label)
+                    for episode in [left, right, repeat_left, repeat_right]
+                ]
+                if not all(audit["legal"] for audit in audits):
+                    continue
                 first = make_feedback(before_prompt, after_prompt, left, right)
                 first["repeat"] = make_feedback(
                     before_prompt, after_prompt, repeat_left, repeat_right
                 )
+                first["customer_fidelity_reviews"] = audits
                 evidence.append(first)
         save(self.root / f"results/repairs/{label}.json", evidence)
         return evidence
+
+    def repair_fidelity_review(self, episode, customer, label):
+        from tau2.domains.retail.environment import get_environment
+
+        path = self.root / f"results/repair_reviews/{label}-{episode['key']}.json"
+        if path.exists():
+            return json.loads(path.read_text())
+        token = RUN_ID.set(label + "-fidelity")
+        try:
+            audit = review(
+                self.gateway,
+                self.retail.task(episode["task"], "E"),
+                customer,
+                episode,
+                get_environment().get_policy(),
+            )
+            save(path, audit)
+            return audit
+        finally:
+            RUN_ID.reset(token)
 
     def run(self):
         if self.manifest["status"] != "frozen":

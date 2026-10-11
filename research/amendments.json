@@ -132,5 +132,46 @@
         "after": "f38d15fe09dca88a41a7fb7f88fcb3dbc17e416d99c2934216f50ca1ee96d495"
       }
     ]
+  },
+  {
+    "date": "2026-10-12",
+    "phase": "M1/M2, no M3/H observed",
+    "reason": "Customer fidelity audit on all four observed repair trajectories prevents invalid conversations being supplied as true RC repair evidence; independent reviews are cached and charged. Preserve completed native caches/checkpoints on recovery, charge all interrupted attempts.",
+    "changes": [
+      {
+        "file": "research/protocol.md",
+        "before": "4f257066cc2fa249a91ebcec0393d60e9f0813ff11a5aa68596c9e1eb4f28ea1",
+        "after": "b8e6ba089b8263b60da1e0b462d8fa58c57f43f6bf56f528d68c3ce60b5050ff"
+      },
+      {
+        "file": "src/evotau_gepa/experiment.py",
+        "before": "f38d15fe09dca88a41a7fb7f88fcb3dbc17e416d99c2934216f50ca1ee96d495",
+        "after": "881f8b5442c9a0dd15c0cc94fe061f385ba124a4663da4c625b42f3938776832"
+      }
+    ]
+  },
+  {
+    "date": "2026-10-12",
+    "phase": "M1/M2; before M3/H",
+    "reason": "Six concurrent connection resets triggered a global 4-request semaphore, returning to the known working HTTP capacity; successful budgeted recovery probe confirms same model/settings. No auto-retries and no score fabrication.",
+    "changes": [
+      {
+        "file": "src/evotau_gepa/transport.py",
+        "before": "dbb2b97020115af5ef49a77a1d02cd4d8be4d93b1164b8a06e94562bbd60b41b",
+        "after": "c92baed55425066c1383588a5e40fabbf1d6a20c6c1901471e993e7a19e7b342"
+      }
+    ]
+  },
+  {
+    "date": "2026-10-12",
+    "phase": "M1/M2 before M3/H",
+    "reason": "Update offline-report source hash after the previously recorded descriptive plot and budget-completion checks; source verification failure did not reflect any model/objective change.",
+    "changes": [
+      {
+        "file": "src/evotau_gepa/reporting.py",
+        "before": "6a94a922db5de4e2041ef7bbe9cce56f82cc897a61803a8ae3d89d60142fabc8",
+        "after": "5abbf6646866a452cf126291e42291e37cb33c5f55458c95a9f260b982471451"
+      }
+    ]
   }
 ]

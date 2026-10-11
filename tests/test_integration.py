@@ -133,3 +133,18 @@ def test_stagnation_still_attempts_all_alternating_cycles(tmp_path):
         assert not branch["fixed_search_eligible"]
         assert len(branch["cycles"]) == 2
         assert not any(c["service_promoted"] for c in branch["cycles"])
+
+
+def test_distorted_customer_cannot_supply_repair_feedback(tmp_path):
+    from evotau_gepa.experiment import Experiment
+
+    experiment = object.__new__(Experiment)
+    experiment.root = tmp_path
+    left = {"task": "0", "seed": 101, "native_reward": 0}
+    right = {"task": "0", "seed": 101, "native_reward": 1}
+    experiment.evaluate_service = lambda prompt, *args: [left if prompt == "before" else right]
+    experiment.retail = SimpleNamespace(
+        run=lambda task, seed, prompt, *args: left if prompt == "before" else right
+    )
+    experiment.repair_fidelity_review = lambda *args: {"legal": False}
+    assert experiment.verified_repair("before", "after", "distorted", "test") == []

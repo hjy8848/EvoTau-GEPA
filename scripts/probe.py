@@ -55,5 +55,7 @@ except (OSError, ValueError) as exc:
         record["error_body"] = exc.read().decode()[:2000].replace(key, "[REDACTED]")
     budget.finish(request_id, False, time.monotonic() - started, {"error": record["error"]})
 record["budget"] = budget.summary()
+(root / "results/gateway_probes").mkdir(exist_ok=True)
+(root / f"results/gateway_probes/{request_id:06d}.json").write_text(json.dumps(record, indent=2))
 (root / "results/gateway_probe.json").write_text(json.dumps(record, indent=2))
 print(json.dumps(record, indent=2))
