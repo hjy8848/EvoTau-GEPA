@@ -1,5 +1,6 @@
 {
   "frozen_task_lists_unchanged": true,
   "algorithm": "random.Random(1729).shuffle(official_train); E=shuffled[:4]; V=shuffled[8:12]; H=official_test",
-  "reason": "The frozen split_algorithm prose retains the earlier 8/8 draft wording. Executed E/V lists were frozen as 4/4 before search; these explicit lists are authoritative. Preserve immutable manifest bytes and cache identities; no task was changed in response to results."
+  "reason": "The frozen split_algorithm prose retains the earlier 8/8 draft wording. Executed E/V lists were frozen as 4/4 before search; these explicit lists are authoritative. Preserve immutable manifest bytes and cache identities; no task was changed in response to results.",
+  "acceptance_scope": "M1 standalone GEPA-Service uses V selection; repeat-verified E repair is independently required for RC feedback and alternating promotions. V improvement alone is never described as a verified repair."
 }
