@@ -6,3 +6,8 @@ __pycache__/
 .env
 *.sqlite3-shm
 *.sqlite3-wal
+results/episodes/
+results/requests/
+results/searches/
+results/*.log
+results/*.lock

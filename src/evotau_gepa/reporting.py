@@ -69,10 +69,12 @@ def build(root):
         if item["score"] == 1:
             discoveries.append(item)
     run_candidates, run_audits = defaultdict(set), defaultdict(list)
+    candidate_episodes = defaultdict(lambda: defaultdict(set))
     for p in (root / "results/searches").glob("*/candidate_history.jsonl"):
         for line in p.read_text().splitlines():
             h = json.loads(line)
             run_candidates[h["run_id"]].add(h["candidate_sha256"])
+            candidate_episodes[h["run_id"]][h["candidate_sha256"]].update(h["episodes"])
     for item in audits:
         run_audits[item["run_id"]].append(item)
     manifest = json.loads((root / "configs/experiment_manifest.json").read_text())
@@ -111,10 +113,27 @@ def build(root):
         statistics["ci95"] = [x * len(tasks) for x in statistics["ci95"]]
     search_rows = []
     for label, items in sorted(run_audits.items()):
+        by_episode = {x["episode"]["key"]: x for x in items}
+        candidate_reviews = [
+            [by_episode[key] for key in keys if key in by_episode]
+            for keys in candidate_episodes[label].values()
+        ]
+        candidate_reviews = [x for x in candidate_reviews if x]
         search_rows.append(
             {
                 "run_id": label,
                 "evaluated_candidates": len(run_candidates[label]),
+                "audited_candidates": len(candidate_reviews),
+                "legal_candidates_on_observed_episodes": sum(
+                    all(x["audit"]["legal"] for x in reviews) for reviews in candidate_reviews
+                ),
+                "exposed_candidates_on_observed_episodes": sum(
+                    any(x["audit"]["exposed"] for x in reviews) for reviews in candidate_reviews
+                ),
+                "discovery_candidates": sum(
+                    any(x["score"] == 1 for x in reviews) for reviews in candidate_reviews
+                ),
+                "candidate_validity_scope": "actually audited episodes only; automatic review",
                 "audited_episodes": len(items),
                 "legal_episodes": sum(x["audit"]["legal"] for x in items),
                 "exposed_episodes": sum(x["audit"]["exposed"] for x in items),
@@ -128,6 +147,16 @@ def build(root):
         )
     (root / "results/search_metrics.json").write_text(json.dumps(search_rows, indent=2))
     usage = Budget(root / "results/request_budget.sqlite3").summary()
+    states_path = root / "results/states.json"
+    states = json.loads(states_path.read_text()) if states_path.exists() else []
+    loops_complete = len(states) == len(manifest["search_seeds"]) and all(
+        all(
+            len(state.get("branches", {}).get(condition, {}).get("cycles", []))
+            == manifest["cycles"]
+            for condition in ["free", "rc"]
+        )
+        for state in states
+    )
     summary = {
         "episodes": len(episodes),
         "rows": rows,
@@ -136,6 +165,9 @@ def build(root):
         "primary_statistics": statistics,
         "api_usage": usage,
         "heldout_complete": (root / "results/heldout_complete.json").exists(),
+        "planned_search_and_H_execution_complete": loops_complete
+        and (root / "results/heldout_complete.json").exists(),
+        "primary_identifiable_all_repeats": len(paired) == len(manifest["search_seeds"]),
         "complete": (root / "results/heldout_complete.json").exists()
         and len(paired) == len(manifest["search_seeds"]),
     }
@@ -185,8 +217,6 @@ def build(root):
         if audits
         else ([], []),
     }
-    states_path = root / "results/states.json"
-    states = json.loads(states_path.read_text()) if states_path.exists() else []
     method_rows = []
     for name, prefix in [
         ("Native", "H-native"),
@@ -374,11 +404,12 @@ def build(root):
     fig.savefig(root / "paper/figures/cost_benefit.png", dpi=160)
     plt.close(fig)
     report = "# EvoTau-GEPA execution report\n\n"
-    report += (
-        "Frozen execution completed.\n\n"
-        if summary["complete"]
-        else "**Full research execution is incomplete. Missing stages are not negative results.**\n\n"
-    )
+    if summary["complete"]:
+        report += "Frozen execution completed, including all eligible primary pairs.\n\n"
+    elif summary["planned_search_and_H_execution_complete"]:
+        report += "Planned search loops and H evaluation completed. **The primary RC experiment lacks eligible repair pairs; its causal effect is unidentifiable. This is not a negative RC effect estimate.**\n\n"
+    else:
+        report += "**Planned search/H execution is incomplete. Missing stages are not negative results.**\n\n"
     report += table + "\nPrimary comparison: " + json.dumps(statistics) + "\n\n"
     report += "## Final H methods\n\n" + method_table + "\n"
     report += "## Service search\n\n"
@@ -399,8 +430,13 @@ def build(root):
     report += "Native messages, tool calls/results and reward decomposition: results/episodes/. Exact raw transport requests/responses: results/requests/. Candidate history includes rejected proposals. Frozen dependency, source/config and official-data hashes are verifiable with scripts/verify_freeze.py. Offline reconstruction: `.venv/bin/python scripts/build_paper_results.py`. Full execution/resume: set EVOTAU_API_BASE and credentials, then `.venv/bin/python scripts/reproduce.py`.\n\n"
     report += "API usage: " + json.dumps(usage) + "\n\n"
     report += "Only actual episodes are included. Evidence review is automatic, not independent human validation. H has historical exposure; no claim of entirely unseen blind testing. Costs are unknown. Pass^k is not reported without actual k repetitions.\n"
+    report += "Some Service searches begin at V accuracy 1.0. The frozen strict-improvement gate cannot accept a tied candidate even if it might help elsewhere; the small V panel therefore limits opportunities to create eligible repair interventions. Score changes between unchanged prompts are not evidence of strategy improvement.\n"
     interruption = root / "results/interruption.json"
     if interruption.exists():
-        report += "\nExecution interruption: " + interruption.read_text() + "\n"
+        report += (
+            "\nRecorded execution interruption (preserved historical incident; consult completion flags for current status): "
+            + interruption.read_text()
+            + "\n"
+        )
     (root / "paper/experiment_report.md").write_text(report)
     return summary
