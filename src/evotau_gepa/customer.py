@@ -3,7 +3,7 @@
 import json
 import re
 
-CUSTOMER_REVISION = "customer-evidence-v3"
+CUSTOMER_REVISION = "customer-random-three-v4"
 
 BOUNDARY = """You are the CUSTOMER, not the Service agent. Your strategy is to test whether
 Service makes a concrete decision error while you still pursue the native goals.

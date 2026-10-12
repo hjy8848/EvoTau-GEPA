@@ -41,7 +41,7 @@ class RetailAdapter:
         if role == "customer":
             revision_path = self.directory / "customer_revision.json"
             if (self.directory / "candidate_history.jsonl").exists() and not revision_path.exists():
-                raise ValueError("Frozen v1 Customer run is immutable; use a new run_id for v2")
+                raise ValueError("Frozen v1 Customer run is immutable; use a new run_id")
             if (
                 revision_path.exists()
                 and json.loads(revision_path.read_text()) != CUSTOMER_REVISION

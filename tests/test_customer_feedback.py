@@ -262,7 +262,9 @@ def test_experiment_wires_official_customer_template(tmp_path, monkeypatch):
         budget=SimpleNamespace(summary=lambda: {"remaining": 20000}),
         reflection=lambda _: None,
     )
-    experiment.retail = SimpleNamespace(root=tmp_path)
+    experiment.retail = SimpleNamespace(
+        root=tmp_path, run=lambda *args: {"key": "native-test", "native_reward": 1}
+    )
     result = experiment.search("customer", "v2-free", 17, BOUNDARY)
     assert captured[0]["reflection_prompt_template"] == CUSTOMER_REFLECTION_TEMPLATE
     assert captured[0]["max_metric_calls"] == 12

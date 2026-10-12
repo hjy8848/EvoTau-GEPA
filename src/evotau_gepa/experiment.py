@@ -1,6 +1,7 @@
 """Alternating scheduling; all proposal/selection remains in official GEPA."""
 
 import json
+import random
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -22,6 +23,20 @@ def save(path, value):
     temporary.replace(path)
 
 
+class RandomCustomerBatchSampler:
+    """Draw up to three distinct cases, reproducibly at each GEPA iteration."""
+
+    def __init__(self, seed):
+        self.seed = seed
+
+    def next_minibatch_ids(self, loader, state):
+        ids = list(loader.all_ids())
+        if not ids:
+            raise ValueError("No native-success E tasks available for Customer reflection")
+        rng = random.Random(f"{self.seed}:{state.i}")
+        return rng.sample(ids, min(3, len(ids)))
+
+
 class Experiment:
     def __init__(self, root):
         self.root = Path(root)
@@ -41,16 +56,22 @@ class Experiment:
     def search(self, role, run_id, seed, initial="", **kwargs):
         directory = self.root / "results/searches" / run_id
         path = directory / "selection.json"
+        # Validate the Customer revision even when a completed selection exists.
+        adapter = RetailAdapter(self.retail, role, run_id, **kwargs)
         if path.exists():
             return json.loads(path.read_text())
         if self.gateway.budget.summary()["remaining"] <= self.h_request_reserve:
             raise BudgetExceeded("Evolution allowance exhausted; held-out allowance protected")
-        adapter = RetailAdapter(self.retail, role, run_id, **kwargs)
         token = RUN_ID.set(run_id)
         try:
+            trainset = self.units("E")
+            sampling = {"reflection_minibatch_size": 2}
+            if role == "customer":
+                trainset = self.customer_trainset(adapter.service, directory, seed)
+                sampling = {"batch_sampler": RandomCustomerBatchSampler(seed)}
             result = gepa.optimize(
                 seed_candidate={role + "_instructions": initial},
-                trainset=self.units("E"),
+                trainset=trainset,
                 valset=self.units("V"),
                 adapter=adapter,
                 reflection_lm=self.gateway.reflection,
@@ -59,7 +80,7 @@ class Experiment:
                 else None,
                 max_metric_calls=self.manifest[role + "_metric_calls"],
                 seed=seed,
-                reflection_minibatch_size=2,
+                **sampling,
                 skip_perfect_score=False,
                 run_dir=str(directory / "gepa"),
                 raise_on_exception=True,
@@ -88,6 +109,39 @@ class Experiment:
             selection["stagnated"] = True
         save(path, selection)
         return selection
+
+    def customer_trainset(self, service, directory, search_seed):
+        """Only native-success E tasks have room for the discovery reward to drop."""
+        eligible, references = [], []
+        for unit in self.units("E"):
+            if self.gateway.budget.summary()["remaining"] <= self.h_request_reserve:
+                raise BudgetExceeded("Evolution allowance exhausted; held-out allowance protected")
+            baseline = self.retail.run(
+                unit["task"], unit["seed"], service, "", "reference-native-customer", "E"
+            )
+            references.append(
+                {
+                    **unit,
+                    "baseline_key": baseline["key"],
+                    "native_reward": baseline["native_reward"],
+                }
+            )
+            if baseline["native_reward"] == 1:
+                eligible.append(unit)
+        save(
+            directory / "reflection_sampling.json",
+            {
+                "method": "random_without_replacement",
+                "max_cases_per_reflection": 3,
+                "search_seed": search_seed,
+                "service_sha256": digest(service),
+                "references": references,
+                "eligible_tasks": [unit["task"] for unit in eligible],
+            },
+        )
+        if not eligible:
+            raise ValueError("No native-success E tasks available for Customer reflection")
+        return eligible
 
     def evaluate_service(self, prompt, customer, condition, split="E", final=False):
         units = self.units(split)

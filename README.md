@@ -8,6 +8,8 @@ remain unchanged; the freeze guard intentionally prevents resuming those runs wi
 modified source. See [Customer v2 changes](research/customer_feedback_v2.md).
 The subsequent [Customer v3 evidence extraction](research/customer_evidence_v3.md)
 removes repeated reflection logs and provides an offline preview of the actual prompt.
+The [Customer v4 sampler](research/customer_sampling_v4.md) draws up to three distinct
+native-success E tasks at random for each Customer reflection iteration.
 
 ## Install and verify
 
