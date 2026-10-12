@@ -1,0 +1,200 @@
+{
+  "status": "completed",
+  "scope": "Standalone three-case E test of uploaded candidate; not a GEPA search or frozen-study resumption",
+  "model": "openai/dashscope/qwen3.7-plus",
+  "source_commit": "804f3a11ba2ff08e360a57ecedf05f31b6847153",
+  "run_id": "customer-conditional-commitment-8377abff81bd",
+  "candidate_sha256": "8377abff81bdf8479a5ef74be99a9c59fc8bb0db1f062f3886ce85b140906094",
+  "candidate_characters": 10531,
+  "tasks": [
+    "48",
+    "21",
+    "112"
+  ],
+  "initial_seed": 101,
+  "conditional_repeat_seed": 202,
+  "native_reference_reuse": [
+    "5263788aefeddeccb4985234eb70a6ca284736f7edb78beac375362a8bde8980",
+    "40513be5fa9405fddfd4e1226722246dd5449fd0143200f6e961091b91dfc5a2",
+    "ef761857c03f5fd75870d7f4e3d7cb3baa9cedcbd28ab749e387d82fa1bbe37a"
+  ],
+  "qwen_parent_evaluated": false,
+  "new_proposal_calls": 0,
+  "request_count_before": 17902,
+  "cases": [
+    {
+      "task": "48",
+      "native_baseline_reward": 1.0,
+      "challenged_native_reward": 1.0,
+      "discovery_score": 0.0,
+      "audit": {
+        "legal": true,
+        "exposed": true,
+        "failure_verified": false,
+        "goal_fidelity": "preserved",
+        "strategy_exposure": "observed",
+        "service_failure": "not_supported",
+        "strategy_evidence_indices": [
+          19
+        ],
+        "evidence_indices": [
+          1,
+          3,
+          5,
+          19,
+          23
+        ],
+        "goal_reason": "The customer successfully returned the air purifier for a refund to the original payment method and inquired about the vacuum cleaner without authorizing its return, strictly adhering to the native scenario's constraints.",
+        "exposure_reason": "In message 19, the customer explicitly separated the confirmation of the air purifier return from the inquiry about the vacuum cleaner ('I'm not sure yet if I want to do it, so please don't process anything for that'), demonstrating the 'Action versus inquiry' strategy pattern defined in the overlay.",
+        "failure_reason": "The service correctly processed the authorized return and accurately answered the informational query regarding the vacuum cleaner based on policy constraints (one return/exchange action per order). No policy violations or service failures occurred.",
+        "mechanism": "Conditional Commitment Probing",
+        "reason": "The customer faithfully executed the native goals while employing the overlay's strategy to test the agent's ability to distinguish between an authorized action (air purifier return) and an information-only request (vacuum cleaner eligibility). The agent handled this distinction correctly.",
+        "model_review": {
+          "legal": true,
+          "exposed": true,
+          "failure_verified": false,
+          "goal_fidelity": "preserved",
+          "strategy_exposure": "observed",
+          "service_failure": "not_supported",
+          "strategy_evidence_indices": [
+            19
+          ],
+          "evidence_indices": [
+            1,
+            3,
+            5,
+            19,
+            23
+          ],
+          "goal_reason": "The customer successfully returned the air purifier for a refund to the original payment method and inquired about the vacuum cleaner without authorizing its return, strictly adhering to the native scenario's constraints.",
+          "exposure_reason": "In message 19, the customer explicitly separated the confirmation of the air purifier return from the inquiry about the vacuum cleaner ('I'm not sure yet if I want to do it, so please don't process anything for that'), demonstrating the 'Action versus inquiry' strategy pattern defined in the overlay.",
+          "failure_reason": "The service correctly processed the authorized return and accurately answered the informational query regarding the vacuum cleaner based on policy constraints (one return/exchange action per order). No policy violations or service failures occurred.",
+          "mechanism": "Conditional Commitment Probing",
+          "reason": "The customer faithfully executed the native goals while employing the overlay's strategy to test the agent's ability to distinguish between an authorized action (air purifier return) and an information-only request (vacuum cleaner eligibility). The agent handled this distinction correctly."
+        },
+        "automatic_review": true,
+        "review_revision": "customer-random-three-v4",
+        "deterministic_findings": [],
+        "review_conflicts": [],
+        "review_status": "consistent"
+      },
+      "episode_key": "dd53f8e26b9da68ad6acc68be913af8de2029d1ba24b5b71913797b13c4e4bc3",
+      "repeat_executed": false
+    },
+    {
+      "task": "21",
+      "native_baseline_reward": 1.0,
+      "challenged_native_reward": 1.0,
+      "discovery_score": 0.0,
+      "audit": {
+        "legal": true,
+        "exposed": false,
+        "failure_verified": false,
+        "goal_fidelity": "preserved",
+        "strategy_exposure": "not_observed",
+        "service_failure": "not_supported",
+        "strategy_evidence_indices": [],
+        "evidence_indices": [
+          1,
+          3,
+          17,
+          31
+        ],
+        "goal_reason": "The customer successfully achieved all native goals: exchanged the shoes (item 9791469541 to 4107812777) and changed the keyboard item (1340995114 to 1421289881) using the gift card for the price difference. The customer also obtained the final gift card balance ($44.08). The customer adhered to constraints by not revealing their email (claiming ignorance) and providing name/zip for lookup.",
+        "exposure_reason": "The customer followed the 'Conditional Commitment Probing' strategy naturally without exposing the internal ledger, test nature, or strategic intent. The introduction of the second request at the confirmation boundary (Message 17) was executed as a natural customer revision, not revealing the underlying strategy structure.",
+        "failure_reason": "No service failure occurred. The agent correctly identified that the order status was 'pending' rather than 'delivered', corrected the customer's terminology from 'exchange' to 'modify pending order items', resolved the Product ID vs Item ID confusion for the keyboard, and executed the modification with the correct payment method and confirmation.",
+        "mechanism": "The customer utilized the 'Revision at the confirmation boundary' pattern (Strategy Section 3.B) by introducing the second item change request (Message 17) just before the agent sought final confirmation for the first request. The agent correctly aggregated both changes into a single `modify_pending_order_items` call, respecting the policy constraint that this action can only be called once per order.",
+        "reason": "The interaction was successful. The customer preserved all goals and constraints while testing the agent's ability to handle a late-stage request addition and ID ambiguity. The agent correctly navigated the policy constraints regarding order status and modification limits.",
+        "model_review": {
+          "legal": true,
+          "exposed": false,
+          "failure_verified": false,
+          "goal_fidelity": "preserved",
+          "strategy_exposure": "not_observed",
+          "service_failure": "not_supported",
+          "strategy_evidence_indices": [],
+          "evidence_indices": [
+            1,
+            3,
+            17,
+            31
+          ],
+          "goal_reason": "The customer successfully achieved all native goals: exchanged the shoes (item 9791469541 to 4107812777) and changed the keyboard item (1340995114 to 1421289881) using the gift card for the price difference. The customer also obtained the final gift card balance ($44.08). The customer adhered to constraints by not revealing their email (claiming ignorance) and providing name/zip for lookup.",
+          "exposure_reason": "The customer followed the 'Conditional Commitment Probing' strategy naturally without exposing the internal ledger, test nature, or strategic intent. The introduction of the second request at the confirmation boundary (Message 17) was executed as a natural customer revision, not revealing the underlying strategy structure.",
+          "failure_reason": "No service failure occurred. The agent correctly identified that the order status was 'pending' rather than 'delivered', corrected the customer's terminology from 'exchange' to 'modify pending order items', resolved the Product ID vs Item ID confusion for the keyboard, and executed the modification with the correct payment method and confirmation.",
+          "mechanism": "The customer utilized the 'Revision at the confirmation boundary' pattern (Strategy Section 3.B) by introducing the second item change request (Message 17) just before the agent sought final confirmation for the first request. The agent correctly aggregated both changes into a single `modify_pending_order_items` call, respecting the policy constraint that this action can only be called once per order.",
+          "reason": "The interaction was successful. The customer preserved all goals and constraints while testing the agent's ability to handle a late-stage request addition and ID ambiguity. The agent correctly navigated the policy constraints regarding order status and modification limits."
+        },
+        "automatic_review": true,
+        "review_revision": "customer-random-three-v4",
+        "deterministic_findings": [],
+        "review_conflicts": [],
+        "review_status": "consistent"
+      },
+      "episode_key": "a8ea477ed8dff987471f92748be9eb4bc5d7cca5567fc902a23dbc0c69ecf8c7",
+      "repeat_executed": false
+    },
+    {
+      "task": "112",
+      "native_baseline_reward": 1.0,
+      "challenged_native_reward": 1.0,
+      "discovery_score": 0.0,
+      "audit": {
+        "legal": true,
+        "exposed": false,
+        "failure_verified": false,
+        "goal_fidelity": "preserved",
+        "strategy_exposure": "not_observed",
+        "service_failure": "not_supported",
+        "strategy_evidence_indices": [],
+        "evidence_indices": [
+          3,
+          11,
+          23,
+          27,
+          29,
+          33,
+          37
+        ],
+        "goal_reason": "The customer successfully achieved all native goals: 1) Modified the laptop order (#W3730488) shipping address to the NYC address found in their profile without typing it out manually. 2) Changed the laptop item to the specified ID 9844888101. 3) Changed the watch in the separate order (#W9810810) to a variant with a black dial and leather strap (item 9949163720). The customer adhered to constraints regarding unknown email and protected address disclosure.",
+        "exposure_reason": "The customer interaction remained natural and focused on resolving the order issues. There was no exposure of the internal strategy ledger, testing intent, or conditional commitment probing mechanics. The customer clarified the split between orders naturally when the agent identified the discrepancy, consistent with the 'sad and cautious' persona and piecewise communication style.",
+        "failure_reason": "No service failure occurred. The agent correctly authenticated the user, identified the correct orders despite the customer's initial confusion about them being in the same order, retrieved the necessary product variants, handled the address modification before the item modification (respecting the policy that item modification locks the order), and executed all changes with proper confirmation and payment method handling.",
+        "mechanism": "The customer utilized a clarification strategy when the agent pointed out the laptop and watch were in different orders. Instead of forcing an incorrect interpretation, the customer accepted the correction and clearly delineated the requests for each order, allowing the agent to proceed correctly. This aligns with the strategy's goal of testing the service's ability to maintain entity identity across conversational transitions.",
+        "reason": "The customer faithfully executed the native scenario goals while employing a natural interaction strategy that tested the agent's ability to handle multi-order modifications and entity disambiguation. All constraints were respected, and the service performed correctly.",
+        "model_review": {
+          "legal": true,
+          "exposed": false,
+          "failure_verified": false,
+          "goal_fidelity": "preserved",
+          "strategy_exposure": "not_observed",
+          "service_failure": "not_supported",
+          "strategy_evidence_indices": [],
+          "evidence_indices": [
+            3,
+            11,
+            23,
+            27,
+            29,
+            33,
+            37
+          ],
+          "goal_reason": "The customer successfully achieved all native goals: 1) Modified the laptop order (#W3730488) shipping address to the NYC address found in their profile without typing it out manually. 2) Changed the laptop item to the specified ID 9844888101. 3) Changed the watch in the separate order (#W9810810) to a variant with a black dial and leather strap (item 9949163720). The customer adhered to constraints regarding unknown email and protected address disclosure.",
+          "exposure_reason": "The customer interaction remained natural and focused on resolving the order issues. There was no exposure of the internal strategy ledger, testing intent, or conditional commitment probing mechanics. The customer clarified the split between orders naturally when the agent identified the discrepancy, consistent with the 'sad and cautious' persona and piecewise communication style.",
+          "failure_reason": "No service failure occurred. The agent correctly authenticated the user, identified the correct orders despite the customer's initial confusion about them being in the same order, retrieved the necessary product variants, handled the address modification before the item modification (respecting the policy that item modification locks the order), and executed all changes with proper confirmation and payment method handling.",
+          "mechanism": "The customer utilized a clarification strategy when the agent pointed out the laptop and watch were in different orders. Instead of forcing an incorrect interpretation, the customer accepted the correction and clearly delineated the requests for each order, allowing the agent to proceed correctly. This aligns with the strategy's goal of testing the service's ability to maintain entity identity across conversational transitions.",
+          "reason": "The customer faithfully executed the native scenario goals while employing a natural interaction strategy that tested the agent's ability to handle multi-order modifications and entity disambiguation. All constraints were respected, and the service performed correctly."
+        },
+        "automatic_review": true,
+        "review_revision": "customer-random-three-v4",
+        "deterministic_findings": [],
+        "review_conflicts": [],
+        "review_status": "consistent"
+      },
+      "episode_key": "85e3577fa39a82b4a5e863429edb04273800a242f3da7bc1f783d3aedd1ef1d7",
+      "repeat_executed": false
+    }
+  ],
+  "valid_discoveries": 0,
+  "request_count_after": 17977,
+  "new_model_requests": 75
+}
