@@ -1,0 +1,71 @@
+{
+  "mode": "single proposal only; no candidate simulation, selection or effectiveness test",
+  "revision": "customer-random-three-v4",
+  "model": "openai/dashscope/qwen3.7-plus",
+  "source_commit": "dfa1c1d07010cec058eff3664a37629a6be6fb5a",
+  "source_run": "M2-free-43",
+  "search_seed": 43,
+  "iteration": 0,
+  "service_sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+  "current_strategy_provenance": "Actual saved strategy that produced these episodes",
+  "shared_history_scope": "Only the three selected native references; Free, no repair metadata",
+  "tasks": [
+    {
+      "task": "48",
+      "seed": 101,
+      "baseline_native_reward": 1.0,
+      "challenged_native_reward": 1.0,
+      "baseline_episode": "5263788aefeddeccb4985234eb70a6ca284736f7edb78beac375362a8bde8980",
+      "challenged_episode": "65e3345c03e0bf9db709cefa2cf644d95b36a2091d05861f14704f0cfbd015d6",
+      "source_evaluation": "results/searches/M2-free-43/d0aa2eef5bc80fdd69f53d3cf549d26ab2e504fa86c17f61a7d872318b8158e3.json"
+    },
+    {
+      "task": "21",
+      "seed": 101,
+      "baseline_native_reward": 1.0,
+      "challenged_native_reward": 1.0,
+      "baseline_episode": "40513be5fa9405fddfd4e1226722246dd5449fd0143200f6e961091b91dfc5a2",
+      "challenged_episode": "9e44be0028f490b8390a7ad5d3065b0a2b762312ba7007fb2e66330d93f9ad6f",
+      "source_evaluation": "results/searches/M2-free-43/da348fd1a58245b825e945927fdc536ec00bfd2fa877ad3342f8da4d8841da88.json"
+    },
+    {
+      "task": "112",
+      "seed": 101,
+      "baseline_native_reward": 1.0,
+      "challenged_native_reward": 1.0,
+      "baseline_episode": "ef761857c03f5fd75870d7f4e3d7cb3baa9cedcbd28ab749e387d82fa1bbe37a",
+      "challenged_episode": "411d2d81d38c88a25db9928ed0bb07d5533f114ec2167899ee3e31ebfaa7a5fe",
+      "source_evaluation": "results/searches/M2-free-43/887ac29bb9285315a99a8d3b9897125915ffcd0d263985caf430b927c7b52777.json"
+    }
+  ],
+  "input_characters": 137643,
+  "input_sha256": "831bb7eb7bec52107a89a39c023b846f38d20931a945653cfe2193819a42bafa",
+  "new_model_requests": 1,
+  "status": "completed",
+  "run_id": "customer-v4-single-proposal-customer_v4_single_call",
+  "request_count_before": 17901,
+  "candidate_characters": 6129,
+  "role_guard_error": null,
+  "request_count_after": 17902,
+  "ledger_records": [
+    {
+      "id": 17902,
+      "state": "success",
+      "metadata": {
+        "usage": {
+          "completion_tokens": 1361,
+          "prompt_tokens": 44110,
+          "total_tokens": 45471,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "text_tokens": 44110
+          }
+        },
+        "role": "reflection",
+        "run_id": "customer-v4-single-proposal-customer_v4_single_call"
+      }
+    }
+  ],
+  "automatic_retries": 0,
+  "candidate_evaluations": 0
+}

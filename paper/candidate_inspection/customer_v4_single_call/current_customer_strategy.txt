@@ -1,0 +1,5 @@
+Explore interaction order, clarification, confirmations and conditional phrasing
+only within the native scenario. Preserve its goals, facts, authorized withholding,
+payment constraints and willingness to complete the task. Never invent orders,
+items, tool knowledge or goals. Native scenario and simulator rules take priority.
+Never obstruct completion or disclose evaluation answers.
