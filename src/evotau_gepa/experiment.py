@@ -26,6 +26,12 @@ class Experiment:
     def __init__(self, root):
         self.root = Path(root)
         self.manifest = json.loads((self.root / "configs/experiment_manifest.json").read_text())
+        allocation = self.root / "research/resource_allocation.json"
+        self.h_request_reserve = (
+            json.loads(allocation.read_text())["H_request_reserve"]
+            if allocation.exists()
+            else self.manifest["H_request_reserve"]
+        )
         self.gateway = Gateway(root)
         self.retail = Retail(root, self.manifest, self.gateway)
 
@@ -37,7 +43,7 @@ class Experiment:
         path = directory / "selection.json"
         if path.exists():
             return json.loads(path.read_text())
-        if self.gateway.budget.summary()["remaining"] <= self.manifest["H_request_reserve"]:
+        if self.gateway.budget.summary()["remaining"] <= self.h_request_reserve:
             raise BudgetExceeded("Evolution allowance exhausted; held-out allowance protected")
         adapter = RetailAdapter(self.retail, role, run_id, **kwargs)
         token = RUN_ID.set(run_id)
@@ -55,7 +61,7 @@ class Experiment:
                 run_dir=str(directory / "gepa"),
                 raise_on_exception=True,
                 stop_callbacks=lambda state: (
-                    self.gateway.budget.summary()["remaining"] <= self.manifest["H_request_reserve"]
+                    self.gateway.budget.summary()["remaining"] <= self.h_request_reserve
                 ),
             )
         finally:

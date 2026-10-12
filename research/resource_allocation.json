@@ -1,0 +1,7 @@
+{
+  "H_request_reserve": 13000,
+  "search_request_ceiling": 17000,
+  "total_hard_cap": 30000,
+  "reason": "At 16002 charged requests the nominal search allocation stopped M3-Free at 8/12 metric evaluations and prevented M3-RC. Reallocate 1000 from H protection to complete the paired comparison before H, with identical per-arm metric budget and all task/model/selection rules unchanged. H still has 13000 protected requests; completion is not guaranteed if dialogues exceed this planning allowance. No H result has been observed. The immutable experiment manifest remains unchanged to preserve cache identities.",
+  "recorded_at": "2026-10-12T04:36:56.811497+00:00"
+}

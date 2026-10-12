@@ -214,5 +214,17 @@
         "after": "3e74ee354794d74b6f71b06514f0fae9f6725d3f12dc7ad8f78e2d2606ad8813"
       }
     ]
+  },
+  {
+    "date": "2026-10-12T04:36:56.813106+00:00",
+    "phase": "All twelve M4 cycles complete; M3-Free partial 8/12; M3-RC/H not executed",
+    "reason": "Actual nominal resource allocation exhausted; release 1000 protected H requests for completing the prespecified equal-budget M3 comparison. No model, tasks, manifest identity, objectives, evidence rules, GEPA settings or primary estimator changes. Preserve the truncated selection and resume the original official GEPA checkpoint. Resource allocation is explicit, not an increase of the hard 30000 cap.",
+    "changes": [
+      {
+        "file": "src/evotau_gepa/experiment.py",
+        "before": "881f8b5442c9a0dd15c0cc94fe061f385ba124a4663da4c625b42f3938776832",
+        "after": "f433c9e210be21df957c8a1c652f0f50865cf1a90ddb9e01b126680ac9bfa5c4"
+      }
+    ]
   }
 ]

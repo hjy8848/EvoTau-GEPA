@@ -4,5 +4,11 @@
     "kind": "resume_started_before_interrupted_threadpool_finished",
     "scope": "M1-17, before any M3/H results",
     "action": "Terminated the second process, waited for both processes to exit, added an exclusive execution lock before restarting. No candidate selections or H results existed. All overlapping/partial reservations remain charged; raw responses retained. Completed exact-identity native episodes retained, official GEPA resumes its durable state."
+  },
+  {
+    "date": "2026-10-12",
+    "kind": "gateway_timeout_interruption",
+    "scope": "M4 RC searches, before M3 and H; ledger 14082 charged attempts, eight failed and five uncertain reservations",
+    "action": "Confirmed the prior process exited. A budgeted Qwen probe (request 14083) returned HTTP 200. Resumed under the exclusive execution lock using persisted native episodes and official GEPA checkpoints. No automatic transport retries, model fallback, score changes, or budget reset."
   }
 ]
