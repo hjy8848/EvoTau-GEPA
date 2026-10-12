@@ -1,0 +1,15 @@
+{
+  "mode": "offline preview, not sent to model",
+  "tasks": [
+    "48",
+    "112"
+  ],
+  "source_run": "M2-free-17",
+  "source_candidate_role_error": "candidate 02",
+  "v2_characters": 272392,
+  "v3_characters": 97676,
+  "reduction_fraction": 0.6414138447531499,
+  "actual_model_tokens": null,
+  "new_model_requests": 0,
+  "audit_provenance": "Saved v1 audits reused only to compare reflection layouts; no historical judgments changed."
+}

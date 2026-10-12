@@ -97,12 +97,13 @@ def test_customer_reflection_separates_behavior_and_environment(tmp_path):
     )
     row = rows["customer_instructions"][0]
     assert row["Inputs"]["optimized_role"] == "Customer"
-    assert all(m["role"] == "user" for m in row["Generated Outputs"]["customer_utterances"])
-    assert all(m["role"] != "user" for m in row["Environment Responses"]["service_and_tools"])
-    assert len(row["Environment Responses"]["full_chronological_trace"]) == len(
-        episode["simulation"]["messages"]
-    )
-    assert "repair_feedback" not in row["Feedback"]["search_context"]
+    customer = row["Generated Outputs"]["customer_utterances"]
+    assert [m["content"] for m in customer] == [
+        m["content"] for m in episode["simulation"]["messages"] if m["role"] == "user"
+    ]
+    assert all(m["role"] != "user" for m in row["Environment Responses"]["environment_events"])
+    assert "full_chronological_trace" not in row["Environment Responses"]
+    assert "repair_feedback" not in row["Shared Context"]
     assert "RC_ONLY" not in json.dumps(row)
     InstructionProposalSignature.validate_prompt_template(CUSTOMER_REFLECTION_TEMPLATE)
     rendered = InstructionProposalSignature.prompt_renderer(

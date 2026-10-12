@@ -6,6 +6,8 @@ The `codex/customer-feedback-fix` branch contains the offline-tested Customer v2
 The original experiment is stopped at the user's request. Its v1 freeze and results
 remain unchanged; the freeze guard intentionally prevents resuming those runs with
 modified source. See [Customer v2 changes](research/customer_feedback_v2.md).
+The subsequent [Customer v3 evidence extraction](research/customer_evidence_v3.md)
+removes repeated reflection logs and provides an offline preview of the actual prompt.
 
 ## Install and verify
 

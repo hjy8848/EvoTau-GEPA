@@ -7,7 +7,6 @@ from gepa.core.adapter import EvaluationBatch
 from tau2.domains.retail.environment import get_environment
 
 from .customer import (
-    BOUNDARY,
     CUSTOMER_REVISION,
     customer_role_error,
     exploration_feedback,
@@ -15,7 +14,7 @@ from .customer import (
     review,
     valid_discovery,
 )
-from .repair import reflection_context
+from .reflection import extract_evidence, shared_context
 from .retail import digest
 from .transport import RUN_ID
 
@@ -151,6 +150,7 @@ class RetailAdapter:
 
     def make_reflective_dataset(self, candidate, eval_batch, components_to_update):
         rows = []
+        evidence = []
         for output in eval_batch.trajectories or []:
             episode = output["episode"]
             unit = episode or output["unit"]
@@ -158,6 +158,7 @@ class RetailAdapter:
                 raise ValueError("Only E trajectories may enter reflection")
             task = self.retail.task(unit["task"], "E")
             if episode is None:
+                evidence.append(None)
                 rows.append(
                     {
                         "Inputs": {
@@ -181,17 +182,17 @@ class RetailAdapter:
                 "objective_score": output["score"],
             }
             if self.role == "customer":
-                trace = public_trace(episode)
+                excerpt = extract_evidence(episode["simulation"]["messages"], output["audit"])
+                evidence.append(excerpt)
                 feedback.update(
-                    review=output["audit"],
-                    constraints=BOUNDARY,
-                    search_context=reflection_context(self.condition, self.history, self.feedback),
                     exploration=exploration_feedback(
                         output["audit"],
                         episode["native_reward"],
                         output.get("baseline_native_reward"),
                         output["score"],
                     ),
+                    evidence_indices=output["audit"].get("evidence_indices", []),
+                    strategy_evidence_indices=output["audit"].get("strategy_evidence_indices", []),
                     objective="Find lawful, evidenced Service decision errors by changing Customer interaction strategy. Preserve native goals. Do not optimize Service task completion.",
                 )
                 rows.append(
@@ -202,12 +203,10 @@ class RetailAdapter:
                             "available_backend_tools": [],
                         },
                         "Generated Outputs": {
-                            "customer_utterances": [x for x in trace if x["role"] == "user"]
+                            "customer_utterances": excerpt["customer_utterances"]
                         },
                         "Environment Responses": {
-                            "service_and_tools": [x for x in trace if x["role"] != "user"],
-                            "full_chronological_trace": trace,
-                            "interpretation": "Environment observations only; these are not Service instructions to optimize.",
+                            k: v for k, v in excerpt.items() if k != "customer_utterances"
                         },
                         "Feedback": feedback,
                     }
@@ -219,5 +218,11 @@ class RetailAdapter:
                     "Generated Outputs": public_trace(episode),
                     "Feedback": feedback,
                 }
+            )
+        if self.role == "customer" and rows:
+            for i, row in enumerate(rows):
+                row["Inputs"]["case_id"] = i
+            rows[0]["Shared Context"] = shared_context(
+                self.condition, self.history, self.feedback, evidence
             )
         return {name: rows for name in components_to_update}
