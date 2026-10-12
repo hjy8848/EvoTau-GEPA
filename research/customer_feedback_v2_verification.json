@@ -1,0 +1,16 @@
+{
+  "status": "offline_verified_not_run_with_model",
+  "revision": "customer-feedback-v2",
+  "parent_commit": "19963ce",
+  "requests_before_and_after": 17901,
+  "checks": "34 offline tests; ruff lint/format; v1 resume source mismatch blocks before gateway",
+  "source_sha256": {
+    "src/evotau_gepa/customer.py": "7c485218165a06e02d8a2dcc473589dec2dd53994f97a6fab60f744d851df428",
+    "src/evotau_gepa/adapter.py": "a53a25aea89496c96997b2d4c607a223ef5e67be8a3e0d186666027065c8d3fc",
+    "src/evotau_gepa/experiment.py": "e7ad999aad89846aa80f30b3874c38ca45fa04210f353723041f19972129b180",
+    "src/evotau_gepa/reporting.py": "5dc2d55489c1a36d57184e786e9b56c287018ebfdbcbac5e21ca5f7eef1876e9",
+    "tests/test_customer_feedback.py": "8db822169ff99c7a65bbbc51a2ac823e68de735e1c7d3110808ac9103dcc35ab",
+    "tests/fixtures/customer_case_13.json": "3ee2afd8bb6726348b03276bda25cfaaad35458da5b6bb0d3f43ce6b71833ae6",
+    "tests/fixtures/customer_case_107.json": "0b37f25665b60a9c2c1e26e3b63e36c09909cdadabb36511657a16913b3c38c7"
+  }
+}

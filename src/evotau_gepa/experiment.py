@@ -8,7 +8,7 @@ import gepa
 
 from .adapter import RetailAdapter
 from .budget import BudgetExceeded
-from .customer import BOUNDARY, public_trace, review, valid_discovery
+from .customer import BOUNDARY, CUSTOMER_REFLECTION_TEMPLATE, public_trace, review, valid_discovery
 from .repair import make_feedback
 from .retail import Retail, digest
 from .transport import RUN_ID, Gateway
@@ -54,6 +54,9 @@ class Experiment:
                 valset=self.units("V"),
                 adapter=adapter,
                 reflection_lm=self.gateway.reflection,
+                reflection_prompt_template=CUSTOMER_REFLECTION_TEMPLATE
+                if role == "customer"
+                else None,
                 max_metric_calls=self.manifest[role + "_metric_calls"],
                 seed=seed,
                 reflection_minibatch_size=2,

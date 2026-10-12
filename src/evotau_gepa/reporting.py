@@ -87,6 +87,9 @@ def build(root):
     for p in (root / "results/searches").glob("*/candidate_history.jsonl"):
         for line in p.read_text().splitlines():
             h = json.loads(line)
+            if not h["episodes"]:
+                # A role-rejected proposal has no actual native evaluation.
+                continue
             run_candidates[h["run_id"]].add(h["candidate_sha256"])
             candidate_episodes[h["run_id"]][h["candidate_sha256"]].update(h["episodes"])
     for item in audits:

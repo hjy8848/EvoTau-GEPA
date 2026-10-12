@@ -2,6 +2,11 @@
 
 Independent research apparatus for repair-conditioned customer–service co-evolution on native Retail. Official GEPA does all prompt search; native tau2 owns policies, tools, tasks, dialogue and scoring. Every LLM role uses the same Qwen3.7-Plus gateway.
 
+The `codex/customer-feedback-fix` branch contains the offline-tested Customer v2 fixes.
+The original experiment is stopped at the user's request. Its v1 freeze and results
+remain unchanged; the freeze guard intentionally prevents resuming those runs with
+modified source. See [Customer v2 changes](research/customer_feedback_v2.md).
+
 ## Install and verify
 
 Python 3.12 is required. The checked-in requirements lock pins the executed environment, including the official tau2 Git revision. No old EvoTau runtime dependency.
